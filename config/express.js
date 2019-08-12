@@ -14,7 +14,7 @@ module.exports = function(){
 	
 	app.use(middleware.logger);
 
-	app.use( "/api/v1" , require( "../app" ));
+	app.use(require( "../app" ));
 
 
 	return {
