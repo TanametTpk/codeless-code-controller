@@ -11,7 +11,7 @@ const { expect } = chai
 
 describe('Generator routes', () => {
 
-    const apiVersion = "/api/v1"
+    
     const request = supertest(server)
 
     describe('Build', () => {
@@ -19,7 +19,7 @@ describe('Generator routes', () => {
         // success
         it('responds with json', (done) => {
             request
-                .post(apiVersion + '/generator')
+                .post('/generator')
                 .send(mockup)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
