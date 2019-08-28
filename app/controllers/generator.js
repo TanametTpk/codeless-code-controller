@@ -13,15 +13,19 @@ exports.generate = async (req , res) => {
 
         // wait for response
         let [projectInfo, templateInfo] = await Promise.all([ projectProm, templateProm ]);
+        projectInfo = projectInfo.data
+        templateInfo = templateInfo.data
 
         // build
-        let url = await api.generator.build(templateInfo.triggerFieldMap , fieldValue , templateInfo.trigger , projectInfo.name)
+        let url = await api.generator.build(projectID , fieldValue , projectInfo , templateInfo.triggerFieldMap , templateInfo.trigger )
+        url = url.data
         
         // response
-		res.success({url});
+		res.success(url);
 
 	} catch (error){
-
+        console.log(error);
+        
 		res.preconditionFailed({error});
 	}
 
