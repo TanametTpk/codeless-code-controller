@@ -1,9 +1,10 @@
 const axios = require('axios')
 const config = require('../../config/env/network.config')
 
-const build = (triggerFieldMap , fieldValue , trigger , app_name) => {
+const build = (userID , field_val , project , triggerFieldMap , trigger) => {
 
-	return axios.post( config.generator_host + "/api/v1/builder/build" , {triggerFieldMap , fieldValue , trigger , app_name} )
+	// userID , field_val , project , triggerFieldMap , trigger
+	return axios.post( config.generator_host + "/builder/build" , {userID , field_val , project , triggerFieldMap , trigger} )
 
 }
 

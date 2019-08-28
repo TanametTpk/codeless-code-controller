@@ -1,11 +1,11 @@
 const axios = require('axios')
 const config = require('../../config/env/network.config')
 
-const getTemplate = (templateId , fieldValue) => {
+const getTemplate = (templateID , fieldValue) => {
 
 	let fieldIDs = fieldValue.map((fv) => fv.field)
 
-	return axios.post( config.template_host + "/api/v1/code" , {templateId , fieldIDs} )
+	return axios.post( config.template_host + "/code" , {templateID , fieldIDs} )
 
 }
 
