@@ -23,7 +23,14 @@ describe('Generator routes', () => {
                 .send(mockup)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(200 , done)
+                .expect(200)
+                .then( res => {
+                    expect(res.body.url.length > 5).to.equal(true)
+                    done()
+                })
+                .catch((err) => {
+                    done(err)
+                })
         });
 
     });
