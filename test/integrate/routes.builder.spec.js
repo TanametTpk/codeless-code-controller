@@ -1,8 +1,8 @@
 const supertest = require('supertest')
 const chai = require('chai')
-const express = require('../config/express')
+const express = require('../../config/express')
 const server = express().server;
-const mockup = require('./data/builder')
+const mockup = require('../data/builder')
 
 const { expect } = chai
 
@@ -23,7 +23,7 @@ describe('Generator routes', () => {
                 .send(mockup)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
-                .expect(412 , done)
+                .expect(200 , done)
         });
 
     });
