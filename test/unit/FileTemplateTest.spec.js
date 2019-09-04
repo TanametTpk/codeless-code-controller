@@ -8,7 +8,7 @@ describe('FileTemplate', () => {
 
     describe('create object', () => {
 
-        let path = "./test/data/text.txt"
+        let path = `${__dirname}/../data/test.txt`
 
         it('should have prototype', () => {
             

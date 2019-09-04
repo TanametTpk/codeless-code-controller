@@ -5,7 +5,7 @@ class FileTemplate extends Template {
 
     constructor(path){
         
-        let prototype = fs.readFile(path , 'utf8')
+        let prototype = fs.readFileSync(path , 'utf8')
         super(prototype)
 
     }
