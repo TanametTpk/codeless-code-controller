@@ -1,0 +1,21 @@
+exports.validate = async (req , res) => {
+
+	let {{|id_var|} , {|encrypt_var|}} = req.body;
+	try{
+
+		let target = await {|database|}.find({ {|id_var|} });
+		let token = await {|database|}.validate{|encrypt_var_capital|}(target ,{|encrypt_var|});
+		if (token){
+
+			return res.success({
+				{|database|} : {|database|}.wrap(target),
+				token : token
+			});
+		}
+
+		return res.unauthorized();
+
+	} catch (err){
+		return res.unauthorized();
+	}
+}

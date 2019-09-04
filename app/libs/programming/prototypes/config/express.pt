@@ -1,0 +1,20 @@
+const express = require("express")
+const http = require("http")
+const middleware = require("./middlewares")
+
+module.exports = function(){
+
+	var app = express();
+	const server = http.createServer(app);
+
+{|middlewares?|}
+
+	require( "./mongoose" )(app);
+	app.use( "/api/v1" , require( "../app" ));
+{|extension?|}
+
+	return {
+		app:app,
+		server:server,
+	};
+}
