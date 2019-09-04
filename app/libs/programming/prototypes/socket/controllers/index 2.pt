@@ -1,7 +1,0 @@
-const room = require("./room");
-{|require|}
-
-module.exports = {
-	room,
-{|export|}
-}
