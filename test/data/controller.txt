@@ -1,0 +1,87 @@
+const application = require('../classes/application');
+
+exports.get = async (req , res) => {
+
+	try {
+
+		applicationTarget = await application.findManyAndPopulate(req.query , req._populate);
+
+		res.success(applicationTarget);
+
+	} catch (err){
+		res.preconditionFailed();
+	}
+
+};
+
+exports.getPagination = async (req , res) => {
+
+	try {
+
+		applicationTarget = await application.findManyAndPopulate(req.query , req._populate , req._page , req._size );
+		res.success(applicationTarget);
+
+	} catch (err){
+		res.preconditionFailed();
+	}
+
+};
+
+exports.getSpecific = async (req , res) => {
+
+	try {
+
+		let applicationTarget = await application.find( {_id: req._objectId } , req._populate );
+		applicationTarget = await application.wrap( applicationTarget );
+		res.success(applicationTarget);
+
+	} catch (err){
+		res.preconditionFailed();
+	}
+
+};
+
+exports.create = async (req , res) => {
+
+	try{
+
+		const saved = await application.create(req.body);
+		res.success(saved);
+
+	} catch (err){
+		res.repeat();
+	}
+
+};
+
+exports.update = async (req , res) => {
+
+	try {
+
+		let target = await application.find({ _id : req._objectId });
+		let updatedObj = await application.update(target , req.body);
+		updatedObj = await application.wrap( updatedObj );
+		res.success(updatedObj);
+
+	} catch (err){
+		res.preconditionFailed();
+	}
+
+};
+
+exports.delete = async (req , res) => {
+
+	try {
+
+		let target = await application.find({ _id : req._objectId });
+		let deletedObj = await application.deleteObj(target);
+		deletedObj = await application.wrap( deletedObj );
+		res.success(deletedObj);
+
+	} catch (err){
+		res.preconditionFailed();
+	}
+
+};
+
+

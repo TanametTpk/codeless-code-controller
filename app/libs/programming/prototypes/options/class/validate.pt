@@ -1,0 +1,11 @@
+const validate{|encrypt_var_capital|} = ({|databaseName|} , {|encrypt_var|}) => {
+
+	if ({|databaseName|} === null) return null;
+	if ( !{|databaseName|}.validate{|encrypt_var_capital|}({|encrypt_var|}) ) return null;
+
+	const { _id , {|auth_var|} } = {|databaseName|};
+	let auth = { _id , {|auth_var|} };
+
+	return createJWT(auth);
+
+}

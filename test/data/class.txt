@@ -1,0 +1,76 @@
+const Application = require( "mongoose" ).model( "application" );
+const jwt = require('jsonwebtoken');
+const jwtConfig = require('../../config/env/jwt.config');
+
+const find = (query , populate) => {
+
+	let result = Application.findOne(query)
+
+	if (populate) result = result.populate(populate);
+	return result
+
+}
+
+const findManyAndPopulate = (query , populate , skip , limit) => {
+
+	if (!skip) skip = 0
+	if (!limit) limit = 1000
+
+	let result = Application.find(query).limit(limit).skip(skip * limit);
+
+	if (populate) result = result.populate(populate);
+	return result
+
+}
+
+const create = (data) => {
+
+	const application = new Application(data);
+	
+
+	return application.save();
+
+};
+
+const update = ( application, data ) => {
+
+	const { name,created_at,created_by } = data;
+	const current = application;
+
+    if (name) current.name = name
+    if (created_at) current.created_at = created_at
+    if (created_by) current.created_by = created_by
+
+
+	return application.save();
+
+};
+
+const deleteObj = ( application ) => application.deleteOne();
+
+const wrap = (application) => {
+
+	if (application === null) return {};
+	const { _id , name,created_at,created_by } = application;
+
+	return { _id , name,created_at,created_by };
+
+}
+
+const createJWT = (data) => {
+
+    return jwt.sign(data , jwtConfig.jwt_secret)
+
+}
+
+
+
+module.exports = {
+	find,
+	findManyAndPopulate,
+	create,
+	update,
+	deleteObj,
+	wrap,
+	
+};

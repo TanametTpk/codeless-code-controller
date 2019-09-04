@@ -1,0 +1,22 @@
+const middlewares = require( "../../config/middlewares" );
+const {|controller|} = require( "../controllers/{|controller|}" );
+const express = require( "express" );
+const router = express.Router();
+
+router.get("/", middlewares.getterPopulate , {|controller|}.get);
+
+router.get("/pages/:page", middlewares.getterPagination, middlewares.getterPopulate, {|controller|}.getPagination);
+
+router.get("/:objectId", middlewares.getterObjectId, middlewares.getterPopulate, {|controller|}.getSpecific);
+
+router.post("/", {|controller|}.create);
+
+router.post("/:objectId", middlewares.getterObjectId, {|controller|}.update);
+
+router.post("/:objectId/del", middlewares.getterObjectId, {|controller|}.delete);
+
+{|validate?|}
+
+{|customFunction?|}
+
+module.exports = router;
