@@ -1,0 +1,16 @@
+var mongoose = require("mongoose");
+var Schema = require("mongoose").Schema;
+var Encoder = require("./libs/Encoder")
+
+var nameSchema = Schema({
+
+    att : { type: String },
+	
+
+})
+
+
+
+
+
+module.exports = mongoose.model('name', nameSchema)

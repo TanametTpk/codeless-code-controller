@@ -1,0 +1,22 @@
+var mongoose = require("mongoose");
+var Schema = require("mongoose").Schema;
+var Encoder = require("./libs/Encoder")
+
+var nameSchema = Schema({
+
+    att : { type: String },
+	
+
+})
+
+nameSchema.methods.setAtt = function( att ){
+	this.att = Encoder.MD5_encrypt(att);
+}
+
+nameSchema.methods.validateAtt = function( att ){
+	return Encoder.MD5_validate(att , this.att);
+}
+
+
+
+module.exports = mongoose.model('name', nameSchema)
