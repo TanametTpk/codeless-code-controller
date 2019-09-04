@@ -79,7 +79,7 @@ exports.delete = async (req , res) => {
 		res.success(deletedObj);
 
 	} catch (err){
-			res.preconditionFailed();
+		res.preconditionFailed();
 	}
 
 };
