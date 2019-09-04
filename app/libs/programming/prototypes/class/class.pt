@@ -1,6 +1,6 @@
 const {|databaseNameCapital|} = require( "mongoose" ).model( "{|databaseName|}" );
 const jwt = require('jsonwebtoken');
-const jwtConfig = require('../../config/env/awt.config');
+const jwtConfig = require('../../config/env/jwt.config');
 
 const find = (query , populate) => {
 
@@ -16,7 +16,7 @@ const findManyAndPopulate = (query , populate , skip , limit) => {
 	if (!skip) skip = 0
 	if (!limit) limit = 1000
 
-	let result = {|databaseNameCapital|}.find(query , "{|attributes|}").limit(limit).skip(skip * limit);
+	let result = {|databaseNameCapital|}.find(query).limit(limit).skip(skip * limit);
 
 	if (populate) result = result.populate(populate);
 	return result
@@ -26,7 +26,8 @@ const findManyAndPopulate = (query , populate , skip , limit) => {
 const create = (data) => {
 
 	const {|databaseName|} = new {|databaseNameCapital|}(data);
-{|hashable_attributes?|}
+	{|hashable_attributes?|}
+
 	return {|databaseName|}.save();
 
 };
@@ -34,7 +35,7 @@ const create = (data) => {
 const update = ( {|databaseName|}, data ) => {
 
 	const { {|updatable_attributes|} } = data;
-	const current{|databaseNameCapital|} = {|databaseName|};
+	const current = {|databaseName|};
 
 {|update_code|}
 
@@ -42,7 +43,7 @@ const update = ( {|databaseName|}, data ) => {
 
 };
 
-const deleteObj = ( {|databaseName|} ) => {|databaseName|}.remove();
+const deleteObj = ( {|databaseName|} ) => {|databaseName|}.deleteOne();
 
 const wrap = ({|databaseName|}) => {
 
@@ -50,6 +51,12 @@ const wrap = ({|databaseName|}) => {
 	const { _id , {|attributes|} } = {|databaseName|};
 
 	return { _id , {|attributes|} };
+
+}
+
+const createJWT = (data) => {
+
+    return jwt.sign(data , jwtConfig.jwt_secret)
 
 }
 
@@ -62,5 +69,5 @@ module.exports = {
 	update,
 	deleteObj,
 	wrap,
-{|export?|}
+	{|export?|}
 };

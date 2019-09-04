@@ -6,6 +6,6 @@ const validate{|encrypt_var_capital|} = ({|databaseName|} , {|encrypt_var|}) => 
 	const { _id , {|auth_var|} } = {|databaseName|};
 	let auth = { _id , {|auth_var|} };
 
-	return jwt.sign(auth , jwtConfig.awt_secret);
+	return createJWT(auth);
 
 }
