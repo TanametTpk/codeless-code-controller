@@ -7,6 +7,9 @@ module.exports = function(){
 	var app = express();
 	const server = http.createServer(app);
 
+	app.use(express.json());
+	app.use(middleware.customResponses);
+	app.use(middleware.logger);
 {|middlewares?|}
 
 	require( "./mongoose" )(app);

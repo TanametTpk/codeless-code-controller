@@ -4,6 +4,7 @@ const Template = require('./engine/FileTemplate')
 const Database = require('./programming/DatabaseGenerator')
 const Controller = require('./programming/ControllerGenerator')
 const Classes = require('./programming/ClassGenerator')
+const Socket = require('./programming/SocketGenerator')
 
 class Structure {
 
@@ -62,6 +63,13 @@ class Structure {
         // routes
         let routes = new FolderTrigger('routes')
 
+        let requireTemplate = new Template(`${__dirname}/programming/prototypes/options/index/require.pt`)
+        let routeTemplate = new Template(`${__dirname}/programming/prototypes/options/router/router`)
+        let template = new Template(`${__dirname}/programming/prototypes/index.pt`)
+
+        let requires = ""
+        let routes = ""
+
         this.schemas.map((s) => {
 
             let classGen = new Classes(s)
@@ -80,28 +88,122 @@ class Structure {
                 new FileTrigger(`${s.name}.js` , routeGen.generate())
             )
 
+            requires += requireTemplate.generate({
+                object: this.schema.name
+            })
+
+            routes += routeTemplate.generate({
+                database: this.schema.name
+            })
+
         })
 
         // index
-        let index = new FileTrigger('index.js' , "content")
+        let index = new FileTrigger('index.js' , template.generate({
+            requires,
+            routes
+        }))
+
+        folder.add(classes)
+        folder.add(controllers)
+        folder.add(routes)
+        routes.add(index)
 
     }
 
     createSocket(folder){
 
         // controller
+        let controller = new FolderTrigger('controllers')
 
-        // index
+        let room = new Template(`${__dirname}/programming/prototypes/socket/controllers/room.pt`)
+        let callControllerTemplate = new Template(`${__dirname}/programming/prototypes/socket/controllers/controller.pt`)
+        let controllerIndex = new Template(`${__dirname}/programming/prototypes/socket/controllers/index.pt`)
+        let socketIndex = new Template(`${__dirname}/programming/prototypes/socket/index.pt`)
+        let requireTemplate = new Template(`${__dirname}/programming/prototypes/options/index/require.pt`)
+
+        let callController = ""
+        let requireController = ""
+        let exportController = ""
+        this.schemas.map((s) => {
+
+            let socket = new Socket(s)
+            controller.add(
+                new FileTrigger(`${s.name}.js` , socket.generate())
+            )
+
+            callController += callControllerTemplate.generate({controller : s.name})
+
+            requireController += requireTemplate.generate({
+                object: this.schema.name
+            })
+
+            exportController += `\t${this.schema.name},\n`
+
+        })
+
+        // add to folder
+        controller.add(new FileTrigger("room.js" , room.generate({})))
+        controller.add(new FileTrigger('index.js' , controllerIndex.generate({ requireController , exportController }) ))
+        folder.add(new FileTrigger("index.js" , socketIndex.generate({
+            controller:callController
+        })))
 
     }
 
     createConfig(folder){
 
+        let envPath = [
+            "env/jwt.config.pt",
+            "env/database.env.pt"
+        ]
+
+        let middlewaresPath = [
+            "middlewares/customResponses.pt",
+            "middlewares/getterObjectId.pt",
+            "middlewares/getterPagination.pt",
+            "middlewares/getterPopulate.pt",
+            "middlewares/logger.pt",
+            "middlewares/validateToken.pt"
+        ]
+
         // env
+        let env = new FolderTrigger('env')
+        envPath.map((path) => {
+
+            let name = path.split("/")[1]
+            let template = new Template(`${__dirname}/programming/prototypes/config/${path}`)
+            env.add(
+                new FileTrigger(name , template.generate({}))
+            )
+
+        })
+
 
         // middlewares
+        let middlewares = new FolderTrigger("middlewares")
+        middlewaresPath.map((path) => {
+
+            let name = path.split("/")[1]
+            let template = new Template(`${__dirname}/programming/prototypes/config/${path}`)
+            middlewares.add(
+                new FileTrigger(name , template.generate({}))
+            )
+
+        })
 
         // express
+        let template = new Template(`${__dirname}/programming/prototypes/config/express.pt`) 
+        let express = new FileTrigger("express.js" , template.generate({}))
+
+        // mongoose
+        template = new Template(`${__dirname}/programming/prototypes/config/mongoose.pt`) 
+        let mongoose = new FileTrigger("mongoose.js" , template.generate({}))
+
+        folder.add(env)
+        folder.add(middlewares)
+        folder.add(express)
+        folder.add(mongoose)
 
     }
 
@@ -120,7 +222,7 @@ class Structure {
         // package.json
         let packageTemplate = this.readRootTemplate('package.pt')
         folder.add(
-            new FileTrigger('package.json' , dockeTemplate.generate({}))
+            new FileTrigger('package.json' , packageTemplate.generate({}))
         )
 
     }
