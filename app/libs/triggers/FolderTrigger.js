@@ -9,6 +9,12 @@ class FolderTrigger extends Trigger {
 
     }
 
+    setLevel (level){
+        super.setLevel(level)
+        this.childs.map((c) => c.setLevel(level + 1))
+
+    }
+
     add(child){
 
         child.setLevel(this.getLevel() + 1)
