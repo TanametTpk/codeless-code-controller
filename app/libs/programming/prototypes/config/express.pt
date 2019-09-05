@@ -13,7 +13,7 @@ module.exports = function(){
 {|middlewares?|}
 
 	require( "./mongoose" )(app);
-	app.use( "/api/v1" , require( "../app" ));
+	app.use( "/api/v1" , require( "../app/routes" ));
 {|extension?|}
 
 	return {

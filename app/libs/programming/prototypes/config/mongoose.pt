@@ -9,7 +9,7 @@ module.exports = function(app) {
 
   require('../app/models');
 
-	mongoose.connect(uri)
+	mongoose.connect(uri , { useNewUrlParser: true })
 	mongoose.Promise = global.Promise;
 
 	if ( app ) app.set( "mongoose", mongoose );

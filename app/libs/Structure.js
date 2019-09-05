@@ -40,6 +40,9 @@ class Structure {
         // create config
         let config = new FolderTrigger('config')
 
+        // logged
+        let logged = new FolderTrigger('logged')
+
         // delegate
         this.createApi(app)
         this.createSocket(socket)
@@ -50,6 +53,7 @@ class Structure {
         this.root.add(app)
         this.root.add(socket)
         this.root.add(config)
+        this.root.add(logged)
         this.root.create(structure)
         return structure
 
@@ -70,11 +74,14 @@ class Structure {
         let routesFolder = new FolderTrigger('routes')
 
         let requireTemplate = new Template(`${__dirname}/programming/prototypes/options/index/require.pt`)
+        let exportTemplate = new Template(`${__dirname}/programming/prototypes/options/index/export.pt`)
+        let indexTemplate = new Template(`${__dirname}/programming/prototypes/options/index/index.pt`)
         let routeTemplate = new Template(`${__dirname}/programming/prototypes/options/router/router.pt`)
         let template = new Template(`${__dirname}/programming/prototypes/index.pt`)
 
         let requires = ""
         let routes = ""
+        let exportModel = ""
 
         this.schemas.map((s) => {
 
@@ -106,7 +113,16 @@ class Structure {
                 database: s.name
             })
 
+            exportModel += `\t${s.name},\n`
+
         })
+
+        // libs
+        let libs = new FolderTrigger('libs')
+        let encodeTemplate = new Template(`${__dirname}/programming/prototypes/model/libs/Encoder.pt`)
+        libs.add(
+            new FileTrigger('Encoder.js' , encodeTemplate.generate({}))
+        )
 
         // index
         let index = new FileTrigger('index.js' , template.generate({
@@ -114,7 +130,14 @@ class Structure {
             routes
         }))
 
+        let indexModel = new FileTrigger('index.js' , indexTemplate.generate({
+            import:requires,
+            export:exportTemplate.generate({objects:exportModel})
+        }))
+
+        models.add(libs)
         folder.add(models)
+        models.add(indexModel)
         folder.add(classes)
         folder.add(controllers)
         folder.add(routesFolder)
@@ -183,10 +206,10 @@ class Structure {
         let env = new FolderTrigger('env')
         envPath.map((path) => {
 
-            let name = path.split("/")[1]
+            let name = path.split("/")[1].split(".pt")[0]
             let template = new Template(`${__dirname}/programming/prototypes/config/${path}`)
             env.add(
-                new FileTrigger(name , template.generate({}))
+                new FileTrigger(`${name}.js` , template.generate({}))
             )
 
         })
@@ -194,15 +217,31 @@ class Structure {
 
         // middlewares
         let middlewares = new FolderTrigger("middlewares")
+        let requireTemplate = new Template(`${__dirname}/programming/prototypes/options/index/require.pt`)
+        let exportTemplate = new Template(`${__dirname}/programming/prototypes/options/index/export.pt`)
+        let indexTemplate = new Template(`${__dirname}/programming/prototypes/options/index/index.pt`)
+        let requires = ""
+        let exportModel = ""
         middlewaresPath.map((path) => {
 
-            let name = path.split("/")[1]
+            let name = path.split("/")[1].split(".pt")[0]
             let template = new Template(`${__dirname}/programming/prototypes/config/${path}`)
             middlewares.add(
-                new FileTrigger(name , template.generate({}))
+                new FileTrigger(`${name}.js` , template.generate({}))
             )
 
+            requires += requireTemplate.generate({
+                object: name
+            })
+
+            exportModel += `\t${name},\n`
+
         })
+
+        let indexMiddleware = new FileTrigger('index.js' , indexTemplate.generate({
+            import:requires,
+            export:exportTemplate.generate({objects:exportModel})
+        }))
 
         // express
         let template = new Template(`${__dirname}/programming/prototypes/config/express.pt`) 
@@ -212,6 +251,7 @@ class Structure {
         template = new Template(`${__dirname}/programming/prototypes/config/mongoose.pt`) 
         let mongoose = new FileTrigger("mongoose.js" , template.generate({}))
 
+        middlewares.add(indexMiddleware)
         folder.add(env)
         folder.add(middlewares)
         folder.add(express)
@@ -234,7 +274,7 @@ class Structure {
         // package.json
         let packageTemplate = this.readRootTemplate('package.pt')
         folder.add(
-            new FileTrigger('package.json' , packageTemplate.generate({}))
+            new FileTrigger('package.json' , packageTemplate.generate({appName:this.name}))
         )
 
     }
