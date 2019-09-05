@@ -31,7 +31,7 @@ class RouteGenerator {
         let encryptVar = this.schema.attributes.filter((att) => att.isEncrypt)
         if (encryptVar.length < 1) return
 
-        let template = new Template(`${__dirname}/prototypes/router/router.pt`)
+        let template = new Template(`${__dirname}/prototypes/options/router/post.pt`)
         let validate =  template.generate({
             path:"/validate",
             controller: this.schema.name,

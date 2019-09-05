@@ -88,6 +88,22 @@ describe('FolderTrigger', () => {
 
         });
 
+        it('level of child shoud be reset when super was set new level', () => {
+            
+            let container = []
+
+            let t1 = new FolderTrigger("t1")
+            let t2 = new FolderTrigger("t2")
+            t1.add(t2)
+            trigger.add(t1)
+            trigger.create(container)
+
+            expect(container[0].level).to.equal(0)
+            expect(container[1].level).to.equal(1)
+            expect(container[2].level).to.equal(2)
+
+        });
+
     });
 
 })

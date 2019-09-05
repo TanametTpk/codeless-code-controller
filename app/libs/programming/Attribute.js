@@ -90,8 +90,9 @@ class Attribute {
         return this
     }
 
-    default(){
+    default(defaultValue){
         this.isDefault = true
+        this.defaultValue = defaultValue
         return this
     }
 

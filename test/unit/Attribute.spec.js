@@ -130,10 +130,11 @@ describe('Attribute', () => {
 
         });
 
-        it('should be default', () => {
+        it('should have default', () => {
             
-            attribute.default()
+            attribute.default("Date.now")
             expect(attribute.isDefault).to.equal(true)
+            expect(attribute.defaultValue).to.equal("Date.now")
 
         });
 
