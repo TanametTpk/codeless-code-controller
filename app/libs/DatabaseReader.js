@@ -97,14 +97,14 @@ const databaseHaveCorrectFormat = (database) => {
 
 const read = (data) => {
 
-    let databases = []
+    let schemas = []
 
-    data.databases.map((database) => {
+    data.schemas.map((schema) => {
 
-        if (databaseHaveCorrectFormat(database)){
+        if (databaseHaveCorrectFormat(schema)){
 
-            let db = new Database(database.name)
-            database.attributes.map((attribute) => {
+            let db = new Database(schema.name)
+            schema.attributes.map((attribute) => {
 
                 let att = getAttribute(attribute)
                 if (att){
@@ -113,13 +113,13 @@ const read = (data) => {
 
             })
 
-            databases.push(db)
+            schemas.push(db)
 
         }
 
     })
 
-    return databases
+    return schemas
 
 
 }
