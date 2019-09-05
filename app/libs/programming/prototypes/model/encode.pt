@@ -1,0 +1,7 @@
+{|name|}Schema.methods.set{|VarEncrypt|} = function( {|varEncrypt|} ){
+	this.att = Encoder.MD5_encrypt({|varEncrypt|});
+}
+
+{|name|}Schema.methods.validate{|VarEncrypt|} = function( {|varEncrypt|} ){
+	return Encoder.MD5_validate({|varEncrypt|} , this.{|varEncrypt|});
+}

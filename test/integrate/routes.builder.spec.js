@@ -2,7 +2,7 @@ const supertest = require('supertest')
 const chai = require('chai')
 const express = require('../../config/express')
 const server = express().server;
-const mockup = require('../data/builder')
+const mockup = require('../data/nodeBuild')
 
 const { expect } = chai
 

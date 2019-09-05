@@ -1,0 +1,7 @@
+const room = require("./room");
+{|requireController|}
+
+module.exports = {
+	room,
+{|exportController|}
+}
