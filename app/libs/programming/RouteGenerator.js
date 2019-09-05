@@ -21,7 +21,7 @@ class RouteGenerator {
 
         this.keys = {
             ...this.keys,
-            controller: this.db.name
+            controller: this.schema.name
         }
 
     }
@@ -34,7 +34,7 @@ class RouteGenerator {
         let template = new Template(`${__dirname}/prototypes/router/router.pt`)
         let validate =  template.generate({
             path:"/validate",
-            controller: this.db.name,
+            controller: this.schema.name,
             method: "validate"
         })
 

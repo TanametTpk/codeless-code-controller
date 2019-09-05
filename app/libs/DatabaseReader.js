@@ -113,7 +113,7 @@ const read = (data) => {
 
             })
 
-            databases.push(database)
+            databases.push(db)
 
         }
 

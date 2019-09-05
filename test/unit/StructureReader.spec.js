@@ -1,9 +1,9 @@
 const chai = require('chai')
 const { expect } = chai
 
-const StructureReader = require('../../app/libs/StructureReader')
+const DatabaseReader = require('../../app/libs/DatabaseReader')
 
-describe('StructureReader', () => {
+describe('DatabaseReader', () => {
 
     describe('create object', () => {
 
@@ -44,16 +44,20 @@ describe('StructureReader', () => {
             }
         ]
 
+        let databases
+
+        beforeEach(()=>{
+            databases = DatabaseReader.read({databases:data})
+        })
+
         it('should have all database', () => {
             
-            let databases = StructureReader.read({databases:data})
             expect(databases.length).to.equal(2)
 
         });
 
         it('should have get right database name', () => {
             
-            let databases = StructureReader.read({databases:data})
             expect(databases[0].name).to.equal("user")
             expect(databases[1].name).to.equal("text")
 
@@ -61,7 +65,6 @@ describe('StructureReader', () => {
 
         it('should have get all attributes', () => {
             
-            let databases = StructureReader.read({databases:data})
             expect(databases[0].attributes.length).to.equal(3)
             expect(databases[1].attributes.length).to.equal(2)
 

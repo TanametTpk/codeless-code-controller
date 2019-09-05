@@ -1,10 +1,10 @@
 const Trigger = require('./triggers')
 const { FileTrigger , FolderTrigger } = Trigger
 const Template = require('./engine/FileTemplate')
-const Database = require('./programming/DatabaseGenerator')
 const Controller = require('./programming/ControllerGenerator')
 const Classes = require('./programming/ClassGenerator')
 const Socket = require('./programming/SocketGenerator')
+const Route = require('./programming/RouteGenerator')
 
 class Structure {
 
@@ -15,7 +15,7 @@ class Structure {
         this.schemas = []
         this.secret = secret
         this.middlewares = []
-        this.root = new FolderTrigger(this.name)
+        this.root = new FolderTrigger(name)
 
     }
 
@@ -47,6 +47,9 @@ class Structure {
         this.createSetting(this.root)
         this.createServer(this.root)
 
+        this.root.add(app)
+        this.root.add(socket)
+        this.root.add(config)
         this.root.create(structure)
         return structure
 
@@ -60,11 +63,14 @@ class Structure {
         // controller
         let controllers = new FolderTrigger('controllers')
 
+        // models
+        let models = new FolderTrigger('models')
+
         // routes
-        let routes = new FolderTrigger('routes')
+        let routesFolder = new FolderTrigger('routes')
 
         let requireTemplate = new Template(`${__dirname}/programming/prototypes/options/index/require.pt`)
-        let routeTemplate = new Template(`${__dirname}/programming/prototypes/options/router/router`)
+        let routeTemplate = new Template(`${__dirname}/programming/prototypes/options/router/router.pt`)
         let template = new Template(`${__dirname}/programming/prototypes/index.pt`)
 
         let requires = ""
@@ -76,6 +82,10 @@ class Structure {
             let controllerGen = new Controller(s)
             let routeGen = new Route(s)
 
+            models.add(
+                new FileTrigger(`${s.name}.js` , s.generate())
+            )
+
             classes.add(
                 new FileTrigger(`${s.name}.js` , classGen.generate())
             )
@@ -84,16 +94,16 @@ class Structure {
                 new FileTrigger(`${s.name}.js` , controllerGen.generate())
             )
 
-            routes.add(
+            routesFolder.add(
                 new FileTrigger(`${s.name}.js` , routeGen.generate())
             )
 
             requires += requireTemplate.generate({
-                object: this.schema.name
+                object: s.name
             })
 
             routes += routeTemplate.generate({
-                database: this.schema.name
+                database: s.name
             })
 
         })
@@ -104,10 +114,11 @@ class Structure {
             routes
         }))
 
+        folder.add(models)
         folder.add(classes)
         folder.add(controllers)
-        folder.add(routes)
-        routes.add(index)
+        folder.add(routesFolder)
+        routesFolder.add(index)
 
     }
 
@@ -135,16 +146,17 @@ class Structure {
             callController += callControllerTemplate.generate({controller : s.name})
 
             requireController += requireTemplate.generate({
-                object: this.schema.name
+                object: s.name
             })
 
-            exportController += `\t${this.schema.name},\n`
+            exportController += `\t${s.name},\n`
 
         })
 
         // add to folder
         controller.add(new FileTrigger("room.js" , room.generate({})))
         controller.add(new FileTrigger('index.js' , controllerIndex.generate({ requireController , exportController }) ))
+        folder.add(controller)
         folder.add(new FileTrigger("index.js" , socketIndex.generate({
             controller:callController
         })))
