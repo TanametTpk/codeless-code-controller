@@ -20,10 +20,14 @@ class SocketGenerator {
 
         this.keys = {
             ...this.keys,
-            capitalClassName: this.db.capitalize(name),
-            className:this.db.name,
+            capitalClassName: this.capitalize(this.schema.name),
+            className:this.schema.name,
         }
 
+    }
+
+    capitalize(text) {
+        return text.charAt(0).toUpperCase() + text.slice(1);
     }
 
 }
