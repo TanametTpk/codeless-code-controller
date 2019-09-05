@@ -53,7 +53,7 @@ describe('Structure', () => {
         let structure
 
         beforeEach(()=>{
-            databases = DatabaseReader.read({databases:data})
+            databases = DatabaseReader.read({schemas:data})
             structure = new Structure("appname" , 80 , "sec")
             
             databases.map((db) => {

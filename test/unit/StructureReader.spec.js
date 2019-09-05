@@ -47,7 +47,7 @@ describe('DatabaseReader', () => {
         let databases
 
         beforeEach(()=>{
-            databases = DatabaseReader.read({databases:data})
+            databases = DatabaseReader.read({schemas:data})
         })
 
         it('should have all database', () => {
