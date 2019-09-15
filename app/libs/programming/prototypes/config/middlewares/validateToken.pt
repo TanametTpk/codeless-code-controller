@@ -6,7 +6,7 @@ module.exports = function( req, res, next ) {
 		if(req.headers[ "authorization" ]) token = token.split(' ')[1];
 
     if ( token ) {
-        return jwt.verify( token, config.awt_secret, function( err, decoded ) {
+        return jwt.verify( token, config.jwt_secret, function( err, decoded ) {
             if ( err ) {
                 return res.unauthorized({
                     message: "Failed to authenticate token.",
