@@ -1,9 +1,9 @@
-FROM node:8
+FROM node:8-alpine
 
 COPY ./package.json /app/
 WORKDIR /app/
 
-RUN apt-get update && npm i --production && npm rebuild
+RUN npm i --production
 
 COPY . /app/
 CMD ["node" , "server.js"]
