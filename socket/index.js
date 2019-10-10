@@ -9,6 +9,8 @@ module.exports = function(server){
 
 		// setup controller
 		controller.room(socket)
+		controller.attribute(socket)
+		controller.databaseMeta(socket)
 
 		socket.on('disconnect' , function(){
 			// user disconnected

@@ -71,7 +71,7 @@ const getAttribute = (attribute) => {
     let att = new Attribute(attribute.name)
     getType(att , attribute)
 
-    if (attribute.default) att.default(attribute.default)
+    if (attribute._default) att.default(attribute._default)
     if (attribute.require) att.require()
     if (attribute.lowercase) att.lowercase()
     if (attribute.trim) att.trim()

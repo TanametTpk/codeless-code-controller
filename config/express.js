@@ -14,8 +14,8 @@ module.exports = function(){
 	
 	app.use(middleware.logger);
 
+	require( "./mongoose" )(app);
 	app.use(require( "../app" ));
-
 
 	return {
 		app:app,
