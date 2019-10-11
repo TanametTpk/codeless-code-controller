@@ -16,7 +16,4 @@ router.put("/:objectId", middlewares.getterObjectId, databaseMeta.update);
 router.delete("/:objectId", middlewares.getterObjectId, databaseMeta.delete);
 
 
-
-
-
 module.exports = router;
