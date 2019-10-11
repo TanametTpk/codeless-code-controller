@@ -54,7 +54,7 @@ exports.generateFromDb = async (req , res) => {
         schemas = await Promise.all(schemas.map( async (schema) => {
 
             // find attribute
-            let attributes = await Attribute.find({databaseMeta:schema._id})
+            let attributes = await Attribute.findManyAndPopulate({databaseMeta:schema._id})
             schema["attributes"] = attributes
 
             return schema

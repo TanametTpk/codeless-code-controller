@@ -20,7 +20,7 @@ var attributeSchema = Schema({
 	id : { type:Boolean},
 	ref : { type:mongoose.Schema.Types.ObjectId , ref: 'attribute'},
 	subObjects : { type:mongoose.Schema.Types.ObjectId , ref: 'attribute'},
-	databaseMeta : { type:mongoose.Schema.Types.ObjectId , ref: 'databaseMeta'},
+	databaseMeta : { type:mongoose.Schema.Types.ObjectId , ref: 'databaseMeta', required : true},
 
 })
 
