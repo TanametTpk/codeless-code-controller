@@ -11,12 +11,9 @@ router.get("/:objectId", middlewares.getterObjectId, middlewares.getterPopulate,
 
 router.post("/", attribute.create);
 
-router.post("/:objectId", middlewares.getterObjectId, attribute.update);
+router.put("/:objectId", middlewares.getterObjectId, attribute.update);
 
-router.post("/:objectId/del", middlewares.getterObjectId, attribute.delete);
-
-
-
+router.delete("/:objectId", middlewares.getterObjectId, attribute.delete);
 
 
 module.exports = router;

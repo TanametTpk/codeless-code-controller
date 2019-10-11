@@ -11,9 +11,9 @@ router.get("/:objectId", middlewares.getterObjectId, middlewares.getterPopulate,
 
 router.post("/", databaseMeta.create);
 
-router.post("/:objectId", middlewares.getterObjectId, databaseMeta.update);
+router.put("/:objectId", middlewares.getterObjectId, databaseMeta.update);
 
-router.post("/:objectId/del", middlewares.getterObjectId, databaseMeta.delete);
+router.delete("/:objectId", middlewares.getterObjectId, databaseMeta.delete);
 
 
 
