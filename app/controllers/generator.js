@@ -7,7 +7,7 @@ const executeGenerate = async (projectID , requirement) => {
     let {schemas , port , secret} = requirement
 
     // call api (send authrization for auth to app server)
-    let projectInfo = await api.application.getProjectInfomation(projectID, req.headers[ "authorization" ])
+    let projectInfo = await api.application.getProjectInfomation(projectID, token)
     projectInfo = projectInfo.data
     let appname = projectInfo.name
 
@@ -27,7 +27,7 @@ exports.generate = async (req , res) => {
         let { projectID , requirement} = req.body
 
         //build
-        let url = await executeGenerate(projectID , requirement)
+        let url = await executeGenerate(projectID , requirement, req.headers[ "authorization" ])
         
         // response
 		res.success(url);
@@ -68,7 +68,7 @@ exports.generateFromDb = async (req , res) => {
         }
 
         //build
-        let url = await executeGenerate(projectID , requirement)
+        let url = await executeGenerate(projectID , requirement, req.headers[ "authorization" ])
         
         // response
 		res.success(url);
