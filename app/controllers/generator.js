@@ -6,8 +6,8 @@ const executeGenerate = async (projectID , requirement) => {
 
     let {schemas , port , secret} = requirement
 
-    // call api
-    let projectInfo = await api.application.getProjectInfomation(projectID)
+    // call api (send authrization for auth to app server)
+    let projectInfo = await api.application.getProjectInfomation(projectID, req.headers[ "authorization" ])
     projectInfo = projectInfo.data
     let appname = projectInfo.name
 
