@@ -2,7 +2,7 @@ const api = require('../classes')
 const DatabaseMeta = require('../classes/databaseMeta')
 const Attribute = require('../classes/attribute')
 
-const executeGenerate = async (projectID , requirement) => {
+const executeGenerate = async (projectID , requirement, token) => {
 
     let {schemas , port , secret} = requirement
 
