@@ -1,9 +1,9 @@
 const axios = require('axios')
 const config = require('../../config/env/network.config')
 
-const getProjectInfomation = (projectID) => {
+const getProjectInfomation = (projectID, token) => {
 
-	return axios.get( config.application_host + `/project/${projectID}` )
+	return axios.get( config.application_host + `/project/${projectID}`, { headers: { Authorization: `Bearer ${token}`}})
 
 }
 
