@@ -27,7 +27,7 @@ class Attribute {
         return this
     }
 
-    setTypeID(ref){
+    setTypeId(ref){
         this.type = `mongoose.Schema.Types.ObjectId , ref: '${ref}'`
         return this
     }
