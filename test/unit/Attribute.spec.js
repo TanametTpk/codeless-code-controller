@@ -41,7 +41,7 @@ describe('Attribute', () => {
 
         it('should be ID', () => {
             
-            attribute.setTypeID("user")
+            attribute.setTypeId("user")
             expect(attribute.type).to.equal("mongoose.Schema.Types.ObjectId , ref: 'user'")
 
         });
