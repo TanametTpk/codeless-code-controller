@@ -55,20 +55,28 @@ exports.generateFromDb = async (req , res) => {
 
             // find attribute
             let attributes = await Attribute.findManyAndPopulate({databaseMeta:schema._id}, "ref subObjects")
-            schema["attributes"] = attributes.map((attribute) => {
-                if (attribute.type === "id") attribute.ref = attribute.ref.name
-                return attribute
+            
+            schema._doc["attributes"] = attributes.map((attribute) => {
+                
+                // ****************** this is wrong it's not replace ref
+                let att = {...attribute._doc}
+                if (attribute.type === "id") att.ref = attribute.ref.name
+                
+                return att
             })
 
-            return schema
+            return schema._doc
 
         }))
-
+        
         let requirement = {
             schemas,
             port:80,
             secret:projectID
         }
+
+        console.log(requirement);
+        
 
         //build
         let url = await executeGenerate(projectID , requirement, req.headers[ "authorization" ])
