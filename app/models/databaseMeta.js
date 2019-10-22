@@ -4,7 +4,7 @@ var Encoder = require("./libs/Encoder")
 
 var databaseMetaSchema = Schema({
 
-	name : { type:String, required : true },
+	name : { type:String, required : true, lowercase: true },
 	project : { type:String, required : true},
 
 })
