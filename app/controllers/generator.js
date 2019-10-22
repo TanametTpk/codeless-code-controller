@@ -58,7 +58,6 @@ exports.generateFromDb = async (req , res) => {
             
             schema._doc["attributes"] = attributes.map((attribute) => {
                 
-                // ****************** this is wrong it's not replace ref
                 let att = {...attribute._doc}
                 if (attribute.type === "id") att.ref = attribute.ref.name
                 
@@ -73,10 +72,7 @@ exports.generateFromDb = async (req , res) => {
             schemas,
             port:80,
             secret:projectID
-        }
-
-        console.log(requirement);
-        
+        }    
 
         //build
         let url = await executeGenerate(projectID , requirement, req.headers[ "authorization" ])
