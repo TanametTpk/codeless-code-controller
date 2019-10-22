@@ -68,7 +68,7 @@ const getAttribute = (attribute) => {
 
     if (!attributeHaveRightFormat(attribute)) return
 
-    let att = new Attribute(attribute.name)
+    let att = new Attribute(attribute.name.replace(/ /g, "_").lowercase())
     getType(att , attribute)
 
     if (attribute._default) att.default(attribute._default)
@@ -103,7 +103,7 @@ const read = (data) => {
 
         if (databaseHaveCorrectFormat(schema)){
 
-            let db = new Database(schema.name)
+            let db = new Database(schema.name.replace(/ /g, "_").lowercase())
             schema.attributes.map((attribute) => {
 
                 let att = getAttribute(attribute)
