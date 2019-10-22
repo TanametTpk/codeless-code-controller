@@ -18,7 +18,7 @@ var attributeSchema = Schema({
 	disableGet : { type:Boolean},
 	auth : { type:Boolean},
 	id : { type:Boolean},
-	ref : { type:mongoose.Schema.Types.ObjectId , ref: 'attribute'},
+	ref : { type:mongoose.Schema.Types.ObjectId , ref: 'databaseMeta'},
 	subObjects : { type:mongoose.Schema.Types.ObjectId , ref: 'attribute'},
 	databaseMeta : { type:mongoose.Schema.Types.ObjectId , ref: 'databaseMeta', required : true},
 
