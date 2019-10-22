@@ -4,7 +4,7 @@ var Encoder = require("./libs/Encoder")
 
 var attributeSchema = Schema({
 
-	name : { type:String, required : true, lowercase : true, trim : true},
+	name : { type:String, required : true, trim : true},
 	type : { type:String, required : true, lowercase : true, default:"string"},
 	default : { type:String},
 	require : { type:Boolean},
