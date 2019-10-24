@@ -13,6 +13,8 @@
 
 module.exports = {
 
+  protocol: process.env.USE_SRV ? "mongodb+srv" : "mongodb",
+
   hostname: process.env.DB_HOST_PORT_27017_TCP_ADDR || process.env.DB_SERVICE || "localhost",
 
   port: process.env.DB_HOST_PORT_27017_TCP_PORT || process.env.DB_PORT || "27017",
@@ -22,5 +24,7 @@ module.exports = {
   username: process.env.DB_USER || "",
 
   password: process.env.DB_PASSWORD || "",
+
+  rewrite: process.env.DB_REWRITE
 
 }
