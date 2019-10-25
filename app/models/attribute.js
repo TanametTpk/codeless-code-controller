@@ -24,4 +24,6 @@ var attributeSchema = Schema({
 
 })
 
+attributeSchema.index({ name:1 , databaseMeta:1 } , {unique: true});
+
 module.exports = mongoose.model('attribute', attributeSchema)

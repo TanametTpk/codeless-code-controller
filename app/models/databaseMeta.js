@@ -9,4 +9,6 @@ var databaseMetaSchema = Schema({
 
 })
 
+databaseMetaSchema.index({ name:1 , project:1 } , {unique: true});
+
 module.exports = mongoose.model('databaseMeta', databaseMetaSchema)
