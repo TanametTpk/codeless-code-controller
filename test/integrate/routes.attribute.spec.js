@@ -3,6 +3,7 @@ const chai = require('chai')
 const express = require('../../config/express')
 const server = express().server;
 const mockup = require('../data/attribute')
+const auth = require('../data/auth')
 const Attribute = require( "mongoose" ).model( "attribute" );
 
 const { expect } = chai
@@ -26,6 +27,7 @@ describe('Attribute routes', () => {
 
             request
                 .get('/attribute')
+                .set('Authorization', auth.jwt)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, done);
@@ -35,6 +37,7 @@ describe('Attribute routes', () => {
 
             request
                 .get('/attribute')
+                .set('Authorization', auth.jwt)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, [], done);
@@ -44,6 +47,7 @@ describe('Attribute routes', () => {
 
             request
                 .get('/attribute/507f1f77bcf86cd799439011')
+                .set('Authorization', auth.jwt)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, {}, done);
@@ -63,10 +67,23 @@ describe('Attribute routes', () => {
 
             request
             .post('/attribute')
-            .send(mockup.attribute[0])
+            .send(mockup.attribute[1])
+            .set('Authorization', auth.jwt)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200 , done)
+
+        });
+
+        it('attribute can\'t have same name in one db', (done) => {
+
+            request
+            .post('/attribute')
+            .send(mockup.attribute[0])
+            .set('Authorization', auth.jwt)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(409 , done)
 
         });
 
@@ -88,6 +105,7 @@ describe('Attribute routes', () => {
             .send({
                 name:mockup.attribute[1].name
             })
+            .set('Authorization', auth.jwt)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
@@ -108,6 +126,7 @@ describe('Attribute routes', () => {
 
             request
             .put('/attribute/' + "507f1f77bcf86cd799439011")
+            .set('Authorization', auth.jwt)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(412, done);
@@ -128,6 +147,7 @@ describe('Attribute routes', () => {
 
             request
             .del('/attribute/' + attribute._id )
+            .set('Authorization', auth.jwt)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200, done);
@@ -138,6 +158,7 @@ describe('Attribute routes', () => {
 
             request
             .del('/attribute/' + "507f1f77bcf86cd799439011" )
+            .set('Authorization', auth.jwt)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(412, done);

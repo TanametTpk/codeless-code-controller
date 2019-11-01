@@ -2,17 +2,17 @@ const api = require('../classes')
 const DatabaseMeta = require('../classes/databaseMeta')
 const Attribute = require('../classes/attribute')
 
-const executeGenerate = async (projectID , requirement, token) => {
+const executeGenerate = async (boxID , requirement, token) => {
 
     let {schemas , port , secret} = requirement
 
     // call api (send authrization for auth to app server)
-    let projectInfo = await api.application.getProjectInfomation(projectID, token)
-    projectInfo = projectInfo.data
-    let appname = projectInfo.name
+    let boxInfo = await api.application.getBoxInfomation(boxID, token)
+    boxInfo = boxInfo.data
+    let appname = boxInfo.name
 
     // build
-    let url = await api.generator.nodeBuild(projectID , projectInfo , appname , schemas , port , secret )
+    let url = await api.generator.nodeBuild(boxID , boxInfo , appname , schemas , port , secret )
     url = url.data
 
     return url
@@ -24,10 +24,10 @@ exports.generate = async (req , res) => {
 	try{
 
         // get variable
-        let { projectID , requirement} = req.body
+        let { boxID , requirement} = req.body
 
         //build
-        let url = await executeGenerate(projectID , requirement, req.headers[ "authorization" ])
+        let url = await executeGenerate(boxID , requirement, req.headers[ "authorization" ])
         
         // response
 		res.success(url);
@@ -45,10 +45,10 @@ exports.generateFromDb = async (req , res) => {
 	try{
 
         // get variable
-        let { projectID } = req.body
+        let { boxID } = req.body
 
         // find database
-        let schemas = await DatabaseMeta.findManyAndPopulate({project: projectID})
+        let schemas = await DatabaseMeta.findManyAndPopulate({box: boxID})
 
         // find attribute
         schemas = await Promise.all(schemas.map( async (schema) => {
@@ -71,11 +71,11 @@ exports.generateFromDb = async (req , res) => {
         let requirement = {
             schemas,
             port:80,
-            secret:projectID
+            secret:boxID
         }    
 
         //build
-        let url = await executeGenerate(projectID , requirement, req.headers[ "authorization" ])
+        let url = await executeGenerate(boxID , requirement, req.headers[ "authorization" ])
         
         // response
 		res.success(url);
@@ -93,19 +93,19 @@ exports.generateFromDb = async (req , res) => {
 // 	try{
 
 //         // get variable
-//         let { projectID , templateID , fieldValue } = req.body
+//         let { boxID , templateID , fieldValue } = req.body
 
 //         // call api
-//         let projectProm = api.application.getProjectInfomation(projectID)
+//         let boxProm = api.application.getBoxInfomation(boxID)
 //         let templateProm = api.template.getTemplate(templateID , fieldValue)
 
 //         // wait for response
-//         let [projectInfo, templateInfo] = await Promise.all([ projectProm, templateProm ]);
-//         projectInfo = projectInfo.data
+//         let [boxInfo, templateInfo] = await Promise.all([ boxProm, templateProm ]);
+//         boxInfo = boxInfo.data
 //         templateInfo = templateInfo.data
 
 //         // build
-//         let url = await api.generator.build(projectID , fieldValue , projectInfo , templateInfo.triggerFieldMap , templateInfo.trigger )
+//         let url = await api.generator.build(boxID , fieldValue , boxInfo , templateInfo.triggerFieldMap , templateInfo.trigger )
 //         url = url.data
         
 //         // response
