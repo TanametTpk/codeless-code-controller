@@ -3,6 +3,7 @@ const chai = require('chai')
 const express = require('../../config/express')
 const server = express().server;
 const mockup = require('../data/nodeBuild')
+const auth = require('../data/auth')
 
 const { expect } = chai
 
@@ -21,6 +22,7 @@ describe('Generator routes', () => {
             request
                 .post('/generator')
                 .send(mockup)
+                .set('Authorization', auth.jwt)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -44,7 +46,7 @@ describe('Generator routes', () => {
 
             await Promise.all(mockup.requirement.schemas.map((s) => {
                 s.attributes.map((a) => Attribute.create(a))
-                DatabaseMeta.create({...s , project:mockup.projectID})
+                DatabaseMeta.create({...s , box:mockup.boxID})
             }))
 
         })
@@ -58,7 +60,8 @@ describe('Generator routes', () => {
         it('responds with json', (done) => {
             request
                 .post('/generator/inplace')
-                .send({projectID: mockup.projectID})
+                .send({boxID: mockup.boxID})
+                .set('Authorization', auth.jwt)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
