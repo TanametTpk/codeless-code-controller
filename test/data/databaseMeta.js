@@ -4,11 +4,11 @@
 let databaseMeta = [
     {
         name:"db1",
-        project:"507f1f77bcf86cd799439011"
+        box:"507f1f77bcf86cd799439011"
     },
     {
         name:"db2",
-        project:"507f1f77bcf86cd799439011"
+        box:"507f1f77bcf86cd799439011"
     }
 ]
 

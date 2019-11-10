@@ -3,6 +3,7 @@ const chai = require('chai')
 const express = require('../../config/express')
 const server = express().server;
 const mockup = require('../data/databaseMeta')
+const auth = require('../data/auth')
 const DatabaseMeta = require( "mongoose" ).model( "databaseMeta" );
 
 const { expect } = chai
@@ -26,6 +27,7 @@ describe('DatabaseMeta routes', () => {
 
             request
                 .get('/databaseMeta')
+                .set('Authorization', auth.jwt)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, done);
@@ -35,6 +37,7 @@ describe('DatabaseMeta routes', () => {
 
             request
                 .get('/databaseMeta')
+                .set('Authorization', auth.jwt)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, [], done);
@@ -44,6 +47,7 @@ describe('DatabaseMeta routes', () => {
 
             request
                 .get('/databaseMeta/507f1f77bcf86cd799439011')
+                .set('Authorization', auth.jwt)
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200, {}, done);
@@ -63,10 +67,23 @@ describe('DatabaseMeta routes', () => {
 
             request
             .post('/databaseMeta')
-            .send(mockup.databaseMeta[0])
-            .set('Accept', 'application/json')
+            .send(mockup.databaseMeta[1])
+            .set('Authorization', auth.jwt)
+                .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200 , done)
+
+        });
+
+        it('databaseMeta can\'t have same name', (done) => {
+
+            request
+            .post('/databaseMeta')
+            .send(mockup.databaseMeta[0])
+            .set('Authorization', auth.jwt)
+                .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(409 , done)
 
         });
 
@@ -88,7 +105,8 @@ describe('DatabaseMeta routes', () => {
             .send({
                 name:mockup.databaseMeta[1].name
             })
-            .set('Accept', 'application/json')
+            .set('Authorization', auth.jwt)
+                .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
             .then((res) => {
@@ -108,7 +126,8 @@ describe('DatabaseMeta routes', () => {
 
             request
             .put('/databaseMeta/' + "507f1f77bcf86cd799439011")
-            .set('Accept', 'application/json')
+            .set('Authorization', auth.jwt)
+                .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(412, done);
 
@@ -128,7 +147,8 @@ describe('DatabaseMeta routes', () => {
 
             request
             .del('/databaseMeta/' + databaseMeta._id )
-            .set('Accept', 'application/json')
+            .set('Authorization', auth.jwt)
+                .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200, done);
 
@@ -138,7 +158,8 @@ describe('DatabaseMeta routes', () => {
 
             request
             .del('/databaseMeta/' + "507f1f77bcf86cd799439011" )
-            .set('Accept', 'application/json')
+            .set('Authorization', auth.jwt)
+                .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(412, done);
 

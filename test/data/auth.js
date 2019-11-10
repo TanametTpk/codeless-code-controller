@@ -1,0 +1,3 @@
+module.exports = {
+    jwt: "Barer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1MDdmMWY3N2JjZjg2Y2Q3OTk0MzkwMTEiLCJpYXQiOjE1NzI2MDA4Njl9.oxpHXKFuJPmeEmeeOXjtG12cq0OwGZwAIMX3VU71Xb0"
+}

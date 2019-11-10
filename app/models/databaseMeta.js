@@ -5,10 +5,11 @@ var Encoder = require("./libs/Encoder")
 var databaseMetaSchema = Schema({
 
 	name : { type:String, required : true, trim: true },
-	project : { type:String, required : true},
+	box : { type:String, required : true},
+	description: {type:String }
 
 })
 
-databaseMetaSchema.index({ name:1 , project:1 } , {unique: true});
+databaseMetaSchema.index({ name:1 , box:1 } , {unique: true});
 
 module.exports = mongoose.model('databaseMeta', databaseMetaSchema)

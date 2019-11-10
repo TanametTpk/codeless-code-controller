@@ -10,13 +10,13 @@ const build = (userID , structure , project) => {
 
 }
 
-const keyMakerBuild = (userID , field_val , project , triggerFieldMap , trigger) => {
+const keyMakerBuild = (userID , field_val , box , triggerFieldMap , trigger) => {
 
 	let keyMaker = new KeyMaker( triggerFieldMap , trigger , field_val)
 	let structure = keyMaker.generate()
 
-	// userID , field_val , project , triggerFieldMap , trigger
-	return build(userID , structure , project)
+	// userID , field_val , box , triggerFieldMap , trigger
+	return build(userID , structure , box)
 
 }
 
