@@ -6,6 +6,7 @@ var databaseMetaSchema = Schema({
 
 	name : { type:String, required : true, trim: true },
 	box : { type:String, required : true},
+	description: {type:String }
 
 })
 

@@ -14,7 +14,7 @@ const findManyAndPopulate = (query , populate , skip , limit) => {
 	if (!skip) skip = 0
 	if (!limit) limit = 1000
 
-	let result = DatabaseMeta.find(query , "name , box").limit(limit).skip(skip * limit);
+	let result = DatabaseMeta.find(query , "name , box , description").limit(limit).skip(skip * limit);
 
 	if (populate) result = result.populate(populate);
 	return result
@@ -47,9 +47,9 @@ const deleteObj = ( databaseMeta ) => databaseMeta.remove();
 const wrap = (databaseMeta) => {
 
 	if (databaseMeta === null) return {};
-	const { _id , name , box } = databaseMeta;
+	const { _id , name , box , description } = databaseMeta;
 
-	return { _id , name , box };
+	return { _id , name , box , description };
 
 }
 

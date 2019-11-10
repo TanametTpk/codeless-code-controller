@@ -4,9 +4,9 @@ const { KeyMaker } = require('../libs/engine')
 const SchemaReader = require('../libs/DatabaseReader')
 const Structure = require('../libs/Structure')
 
-const build = (userID , structure , box) => {
+const build = (userID , structure , project) => {
 
-	return axios.post( config.generator_host + "/builder/build" , {userID , structure , box} )
+	return axios.post( config.generator_host + "/builder/build" , {userID , structure , project} )
 
 }
 
@@ -20,7 +20,7 @@ const keyMakerBuild = (userID , field_val , box , triggerFieldMap , trigger) => 
 
 }
 
-const nodeBuild = (userID , box , appname , schemas , port , secret) => {
+const nodeBuild = (userID , project , appname , schemas , port , secret) => {
 
 	schemas = SchemaReader.read({schemas})
 	let structure = new Structure(appname , port , secret )
@@ -30,7 +30,7 @@ const nodeBuild = (userID , box , appname , schemas , port , secret) => {
 
 	})
 
-	return build(userID , structure.generate() , box)
+	return build(userID , structure.generate() , project)
 	
 }
 
