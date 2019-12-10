@@ -22,11 +22,11 @@ module.exports = function(){
 	app.use(require( "../app/http" ))
 	useError.map((error) => app.use(errorHandlers[error]))
 
-	const io = require('../app/socket')(server)
+	// const io = require('../app/socket')(server)
 
 	return {
 		app,
 		server,
-		io,
+		// io,
 	};
 }

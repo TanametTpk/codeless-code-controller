@@ -1,9 +1,9 @@
-const Model = require( "mongoose" ).model( "customer" );
+const Model = require( "mongoose" ).model( "{|model|}" );
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../config/env/jwt');
 const editable = require('../config/permission')
 
-const modelPermission = editable["customer"]
+const modelPermission = editable["{|model|}"]
 
 const find = (query , populate) => {
 

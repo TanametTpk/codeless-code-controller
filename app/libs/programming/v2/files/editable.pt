@@ -1,0 +1,8 @@
+
+exports.getable = [ "_id" , {|getable|} ]
+
+exports.updatable = [ {|updatable|} ]
+
+exports.jwtPayload = [ "_id" , {|jwtPayload|}]
+
+exports.validateKey = ""

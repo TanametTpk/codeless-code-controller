@@ -1,7 +1,6 @@
 const crypto = require("crypto");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const SaltLength = 9
 
 module.exports = class Encoder {
 

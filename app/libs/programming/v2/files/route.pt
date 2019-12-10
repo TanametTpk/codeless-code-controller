@@ -1,0 +1,51 @@
+module.exports = {
+    create: {
+        path: "/",
+        method: "post",
+        middlewares: [],
+        controller: "{|controller|}",
+        action: "create"
+    },
+    deleteMany: {
+        path: "/",
+        method: "delete",
+        controller: "{|controller|}",
+        action: "deleteMany"
+    },
+    deleteOne:{
+        path: "/:objectId",
+        method: "delete",
+        middlewares: ["getterObjectId"],
+        controller: "{|controller|}",
+        action: "delete"
+    },
+    getMany:{
+        path: "/",
+        method: "get",
+        middlewares: ["getQuery", "getterPopulate"],
+        controller: "{|controller|}",
+        action: "get"
+    },
+    getOne:{
+        path: "/:objectId",
+        method: "get",
+        middlewares: ["getterObjectId", "getterPopulate"],
+        controller: "{|controller|}",
+        action: "getSpecific"
+    },
+    getPagination:{
+        priority: 1,
+        path: "/pages/:page",
+        method: "get",
+        middlewares: ["getterPagination", "getterPopulate"],
+        controller: "{|controller|}",
+        action: "getPagination"
+    },
+    update:{
+        path: "/:objectId",
+        method: "put",
+        middlewares: ["getterObjectId"],
+        controller: "{|controller|}",
+        action: "update"
+    }
+}

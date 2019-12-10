@@ -1,0 +1,51 @@
+const Model = require('../libs/{|service|}');
+
+exports.get = async (req) => {
+
+	let model = await Model.findManyAndPopulate(req.query , req._populate);
+	return model;
+	
+};
+
+exports.getPagination = async (req)=> {
+
+	return await Model.findManyAndPopulate(req.query , req._populate , req._page , req._size );
+
+};
+
+exports.getSpecific = async (req)=> {
+
+	let target = await Model.find( {_id: req._objectId } , req._populate );
+	target = await Model.wrap( target );
+	return target
+};
+
+exports.create = async (req)=> {
+
+	return await Model.create(req.body);
+
+};
+
+exports.update = async (req)=> {
+
+	let target = await Model.find({ _id : req._objectId });
+	let updatedObj = await Model.update(target , req.body);
+	return await Model.wrap( updatedObj )
+
+};
+
+exports.delete = async (req)=> {
+
+	let target = await Model.find({ _id : req._objectId });
+	let deletedObj = await Model.deleteObj(target);
+	return Model.wrap( deletedObj );
+
+};
+
+exports.deleteMany = async (req)=> {
+
+	return await Model.deleteObjMany(req.query)
+
+};
+
+

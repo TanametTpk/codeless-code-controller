@@ -1,5 +1,5 @@
 {
-  "name": "naichangyai",
+  "name": "{|appName|}",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -15,7 +15,6 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-device": "^0.4.2",
-    "glob": "^7.1.5",
     "http": "0.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.13",
