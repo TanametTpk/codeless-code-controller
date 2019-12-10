@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "express-device": "^0.4.2",
     "fs": "0.0.1-security",
+    "glob": "^7.1.6",
     "http": "0.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.13",

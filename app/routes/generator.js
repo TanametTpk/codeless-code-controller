@@ -4,7 +4,6 @@ const express = require( "express" );
 const router = express.Router();
 
 router.post("/", generator.generate);
-router.post("/inplace", generator.generateFromDb);
-
+router.post("/inplace", generator.generateFromDbV2);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const api = require('../classes')
 const DatabaseMeta = require('../classes/databaseMeta')
 const Attribute = require('../classes/attribute')
 
-const executeGenerate = async (boxID , requirement, token) => {
+const executeGenerate = async (boxID , requirement, token , generatorVersion="nodeBuild") => {
 
     let {schemas , port , secret} = requirement
 
@@ -12,7 +12,7 @@ const executeGenerate = async (boxID , requirement, token) => {
     let appname = boxInfo.name
 
     // build
-    let url = await api.generator.nodeBuild(boxID , boxInfo , appname , schemas , port , secret )
+    let url = await api.generator[generatorVersion](boxID , boxInfo , appname , schemas , port , secret )
     url = url.data
 
     return url
@@ -88,33 +88,50 @@ exports.generateFromDb = async (req , res) => {
 
 };
 
-// exports.generate = async (req , res) => {
+exports.generateFromDbV2 = async (req , res) => {
 
-// 	try{
+	try{
 
-//         // get variable
-//         let { boxID , templateID , fieldValue } = req.body
+        // get variable
+        let { boxID } = req.body
 
-//         // call api
-//         let boxProm = api.application.getBoxInfomation(boxID)
-//         let templateProm = api.template.getTemplate(templateID , fieldValue)
+        // find database
+        let schemas = await DatabaseMeta.findManyAndPopulate({box: boxID})
 
-//         // wait for response
-//         let [boxInfo, templateInfo] = await Promise.all([ boxProm, templateProm ]);
-//         boxInfo = boxInfo.data
-//         templateInfo = templateInfo.data
+        // find attribute
+        schemas = await Promise.all(schemas.map( async (schema) => {
 
-//         // build
-//         let url = await api.generator.build(boxID , fieldValue , boxInfo , templateInfo.triggerFieldMap , templateInfo.trigger )
-//         url = url.data
+            // find attribute
+            let attributes = await Attribute.findManyAndPopulate({databaseMeta:schema._id}, "ref subObjects")
+            
+            schema._doc["attributes"] = attributes.map((attribute) => {
+                
+                let att = {...attribute._doc}
+                if (attribute.type === "id") att.ref = attribute.ref.name
+                
+                return att
+            })
+
+            return schema._doc
+
+        }))
         
-//         // response
-// 		res.success(url);
+        let requirement = {
+            schemas,
+            port:80,
+            secret:boxID
+        }    
 
-// 	} catch (error){
-//         console.log(error);
+        //build
+        let url = await executeGenerate(boxID , requirement, req.headers[ "authorization" ], "nodeBuildv2")
         
-// 		res.preconditionFailed({error});
-// 	}
+        // response
+		res.success(url);
 
-// };
+	} catch (error){
+        console.log(error);
+        
+		res.preconditionFailed({error});
+	}
+
+};
