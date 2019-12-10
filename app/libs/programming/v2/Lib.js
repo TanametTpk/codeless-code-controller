@@ -13,7 +13,7 @@ class Lib {
 
         this.setupClass()
 
-        let template = new Template(`${this.path}/files/editable.pt`)
+        let template = new Template(`${this.path}/files/lib.pt`)
         return template.generate(this.keys)
     }
 
