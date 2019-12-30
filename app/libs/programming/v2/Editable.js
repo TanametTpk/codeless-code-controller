@@ -9,11 +9,11 @@ class Services {
         this.path = __dirname
     }
 
-    generate(){
+    generate(version=""){
 
         this.setupClass()
 
-        let template = new Template(`${this.path}/files/editable.pt`)
+        let template = new Template(`${this.path}/files/editable${version}.pt`)
         return template.generate(this.keys)
     }
 

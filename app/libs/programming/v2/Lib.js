@@ -9,11 +9,11 @@ class Lib {
         this.path = __dirname
     }
 
-    generate(){
+    generate(version=""){
 
         this.setupClass()
 
-        let template = new Template(`${this.path}/files/lib.pt`)
+        let template = new Template(`${this.path}/files/lib${version}.pt`)
         return template.generate(this.keys)
     }
 

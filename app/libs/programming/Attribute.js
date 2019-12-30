@@ -148,9 +148,41 @@ class Attribute {
         return this
     }
 
-    generate(){
+    generate(version=""){
 
         let code = this.type
+
+        if (version === "sql") {
+
+            if (code === "Number"){
+                code = "DECIMAL"
+            }
+
+            else if (code === "Date"){
+                code = code.toUpperCase()
+            }
+
+            else {
+                code = "TEXT"
+            }
+
+            if (this.isRequire){
+                code += ", allowNull: false"
+            }
+
+            if (this.isDefault){
+                code += `, defaultValue: ${this.defaultValue}` 
+            }
+
+            if (this.isUnique){
+                code += `, unique: 'compositeIndex'`
+            }
+
+            code = `{ type: DataTypes.${code} }`
+
+            return code
+
+        }
 
         if (this.isRequire){
             code += ", required : true"

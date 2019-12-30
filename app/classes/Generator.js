@@ -35,17 +35,17 @@ const nodeBuild = (userID , project , appname , schemas , port , secret) => {
 	
 }
 
-const nodeBuildv2 = (userID , project , appname , schemas , port , secret) => {
+const nodeBuildv2 = (userID , project , appname , schemas , port , secret , version) => {
 
 	schemas = SchemaReader.read({schemas})
-	let structure = new CloneStructure(appname , port , secret )
+	let structure = new CloneStructure(appname , port , secret , version )
 	schemas.map((s) => {
 
 		structure.addSchema(s)
 
 	})
 
-	return build(userID , structure.generate() , project)
+	return build(userID , structure.generate(version) , project)
 	
 }
 

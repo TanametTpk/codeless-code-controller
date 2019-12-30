@@ -2,7 +2,7 @@ const api = require('../classes')
 const DatabaseMeta = require('../classes/databaseMeta')
 const Attribute = require('../classes/attribute')
 
-const executeGenerate = async (boxID , requirement, token , generatorVersion="nodeBuild") => {
+const executeGenerate = async (boxID , requirement, token , generatorVersion="nodeBuild" , version) => {
 
     let {schemas , port , secret} = requirement
 
@@ -12,7 +12,7 @@ const executeGenerate = async (boxID , requirement, token , generatorVersion="no
     let appname = boxInfo.name
 
     // build
-    let url = await api.generator[generatorVersion](boxID , boxInfo , appname , schemas , port , secret )
+    let url = await api.generator[generatorVersion](boxID , boxInfo , appname , schemas , port , secret , version )
     url = url.data
 
     return url
@@ -93,7 +93,7 @@ exports.generateFromDbV2 = async (req , res) => {
 	try{
 
         // get variable
-        let { boxID } = req.body
+        let { boxID, dbType } = req.body
 
         // find database
         let schemas = await DatabaseMeta.findManyAndPopulate({box: boxID})
@@ -123,7 +123,7 @@ exports.generateFromDbV2 = async (req , res) => {
         }    
 
         //build
-        let url = await executeGenerate(boxID , requirement, req.headers[ "authorization" ], "nodeBuildv2")
+        let url = await executeGenerate(boxID , requirement, req.headers[ "authorization" ], "nodeBuildv2" , dbType)
         
         // response
 		res.success(url);

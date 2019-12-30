@@ -13,12 +13,12 @@ class DatabaseGenerator {
          
     }
 
-    generate(){
+    generate(version=""){
 
         this.setupIndex()
-        this.setupSchema()
+        this.setupSchema(version)
 
-        let template = new FileTemplate(`${this.path}/prototypes/model/schema.pt`)
+        let template = new FileTemplate(`${this.path}/prototypes/model/schema${version}.pt`)
         return template.generate(this.keys)
 
     }
@@ -31,13 +31,13 @@ class DatabaseGenerator {
         this.keys = { ...this.keys , indexSet }
     }
 
-    setupSchema(){
+    setupSchema(version){
 
         if (!this.attributes) return
 
         let attributes = ""
         this.attributes.map((att) => {
-            attributes += `${att.name} : ${att.generate()},\n\t`
+            attributes += `${att.name} : ${att.generate(version)},\n\t`
         })
 
         this.keys = { ...this.keys , attributes }

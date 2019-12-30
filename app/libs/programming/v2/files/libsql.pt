@@ -1,0 +1,71 @@
+const Model = require('./DBConnector').model("{|model|}")
+const jwt = require('jsonwebtoken');
+const jwtConfig = require('../config/env/jwt');
+const editable = require('../config/editable')
+
+const modelPermission = editable["{|model|}"]
+
+const extenQuery = (query, include, offset, limit, attributes) => {
+
+    if (include) include = include.split(',').map(i => i.trim())
+
+    return {
+        where:{...query},
+        include,
+        offset,
+		limit,
+		attributes
+    }
+}
+
+const find = (query, populate) => {
+	query = {id: query._id}
+    query = extenQuery(query, populate)
+    return Model.findOne(query)
+}
+
+const findManyAndPopulate = (query, populate, skip , limit) => {
+    query = extenQuery(query, populate, skip, limit, modelPermission.getable)
+    return Model.findAll(query)
+}
+
+const create = (obj) => {
+    return Model.create(obj)
+}
+
+const count = async (query) => {
+    query = extenQuery(query)
+    return Model.findAndCountAll(query)
+}
+
+const update = (oldObj, newObj) => {
+	query = {id: oldObj.id}
+    query = extenQuery(query)
+    return Model.update(newObj, query)
+}
+
+const deleteObj = (object) => {
+    return Model.destroy({where:{id:object.id}})
+}
+
+const deleteObjMany = (query) => {
+    query = extenQuery(query)
+    return Model.destroy(query)
+}
+
+const wrap = (model) => {
+
+	return model
+
+}
+
+module.exports = {
+    find,
+    findManyAndPopulate,
+    create,
+    count,
+    update,
+    deleteObj,
+	deleteObjMany,
+	wrap
+}

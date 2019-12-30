@@ -1,0 +1,15 @@
+const DBConnector = require( "../libs/DBConnector" );
+const Model = DBConnector.Model
+const DataType = DBConnector.DataTypes
+
+class CustomerModel extends Model {}
+CustomerModel.init({
+	{|attributes|}
+},{
+	sequelize: DBConnector.database,
+	modelName: '{|name|}'
+})
+
+DBConnector.addModel(CustomerModel)
+
+module.exports = CustomerModel

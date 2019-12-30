@@ -19,6 +19,7 @@ class CloneStructure {
         this.root = new FolderTrigger(name)
         this.path = __dirname + "/templates/" + version
         this.folderMapping = {}
+        this.version = version
 
     }
 
@@ -54,7 +55,7 @@ class CloneStructure {
             let editableTemplate = new Editable(s)
 
             models.add(
-                new FileTrigger(`${s.name}.js` , s.generate())
+                new FileTrigger(`${s.name}.js` , s.generate(this.version))
             )
 
             services.add(
@@ -62,11 +63,11 @@ class CloneStructure {
             )
 
             libs.add(
-                new FileTrigger(`${s.name}.js` , libTemplate.generate())
+                new FileTrigger(`${s.name}.js` , libTemplate.generate(this.version))
             )
 
             editable.add(
-                new FileTrigger(`${s.name}.js` , editableTemplate.generate())
+                new FileTrigger(`${s.name}.js` , editableTemplate.generate(this.version))
             )
 
             routes.add(
